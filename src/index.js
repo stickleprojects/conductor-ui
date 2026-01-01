@@ -9,6 +9,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import DefaultAppContextProvider from "./components/context/DefaultAppContextProvider";
+import AuthProvider from "./auth/AuthProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,14 +24,16 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider>
       <BrowserRouter>
-        <DefaultAppContextProvider>
-          <QueryClientProvider client={queryClient}>
-            <CssBaseline />
-            <ReactQueryDevtools />
+        <AuthProvider>
+          <DefaultAppContextProvider>
+            <QueryClientProvider client={queryClient}>
+              <CssBaseline />
+              <ReactQueryDevtools />
 
-            <App />
-          </QueryClientProvider>
-        </DefaultAppContextProvider>
+              <App />
+            </QueryClientProvider>
+          </DefaultAppContextProvider>
+        </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>,

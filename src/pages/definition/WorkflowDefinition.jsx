@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import usePermissions from "../../auth/usePermissions";
 import ReactDOM from "react-dom";
 import { useRouteMatch } from "react-router-dom";
 import { Button, Text, Select, Pill, LinearProgress } from "../../components";
@@ -23,10 +24,8 @@ import SaveWorkflowDialog from "./SaveWorkflowDialog";
 import update from "immutability-helper";
 import { usePushHistory } from "../../components/NavLink";
 
-import {
-  KeyboardArrowLeftRounded,
-  KeyboardArrowRightRounded,
-} from "@material-ui/icons";
+import { KeyboardArrowLeftRounded, KeyboardArrowRightRounded } from "@material-ui/icons";
+import { hasClaim } from "../../auth/permissions";
 
 const minCodePanelWidth = 500;
 const useStyles = makeStyles({
@@ -126,6 +125,10 @@ export default function Workflow() {
     isFetching,
     refetch: refetchWorkflow,
   } = useWorkflowDef(workflowName, workflowVersion, NEW_WORKFLOW_TEMPLATE);
+
+  // Permissions via hook
+  const { hasClaim, account: currentAccount } = usePermissions();
+  const canEditWorkflow = hasClaim("edit-workflow");
 
   const workflowJson = useMemo(
     () => (workflowDef ? JSON.stringify(workflowDef, null, 2) : ""),
@@ -322,12 +325,24 @@ export default function Workflow() {
             )}
 
             <div className={classes.rightButtons}>
-              <Button
-                disabled={!_.isEmpty(jsonErrors) || !isModified}
-                onClick={handleOpenSave}
+              <Tooltip
+                title={
+                  !canEditWorkflow
+                    ? "You do not have the 'edit-workflow' permission to save workflows."
+                    : (!_.isEmpty(jsonErrors) || !isModified)
+                    ? "Save disabled: fix validation errors or make changes first."
+                    : "Save"
+                }
               >
-                Save
-              </Button>
+                <span>
+                  <Button
+                    disabled={!canEditWorkflow || !isModified || !_.isEmpty(jsonErrors)}
+                    onClick={handleOpenSave}
+                  >
+                    Save
+                  </Button>
+                </span>
+              </Tooltip>
               <Button
                 disabled={!isModified}
                 onClick={() => handleResetVersion(workflowVersion)}

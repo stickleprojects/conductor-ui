@@ -23,6 +23,10 @@ import Examples from "./pages/kitchensink/Examples";
 import Gantt from "./pages/kitchensink/Gantt";
 
 import Workbench from "./pages/workbench/Workbench";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedPage from "./pages/misc/ProtectedPage";
+import AuthStatus from "./components/AuthStatus";
+import TokenExample from "./components/TokenExample";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,10 +79,19 @@ export default function App({
           <Button component={NavLink} path="/workbench">
             Workbench
           </Button>
+          <Button component={NavLink} path="/token-example">
+            Token Example
+          </Button>
+          <Button component={NavLink} path="/protected">
+            Protected
+          </Button>
 
           {appBarButtons}
 
-          <div className={classes.toolbarRight}>{appBarModules}</div>
+          <div className={classes.toolbarRight}>
+            {appBarModules}
+            <AuthStatus />
+          </div>
         </Toolbar>
       </AppBar>
       <div className={classes.body}>
@@ -128,6 +141,14 @@ export default function App({
           <Route exact path="/kitchen/gantt">
             <Gantt />
           </Route>
+
+          <Route exact path="/token-example">
+            <TokenExample />
+          </Route>
+
+          <ProtectedRoute exact path="/protected">
+            <ProtectedPage />
+          </ProtectedRoute>
 
           {customRoutes}
         </Switch>

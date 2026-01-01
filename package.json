@@ -2,6 +2,8 @@
   "name": "conductor-ui",
   "version": "4.0.0",
   "dependencies": {
+    "@azure/msal-browser": "^2.39.0",
+    "@azure/msal-react": "^3.0.23",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
@@ -75,6 +77,8 @@
     "@babel/register": "^7.17.7",
     "@cypress/react": "^5.12.5",
     "@cypress/webpack-dev-server": "^1.8.4",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react-hooks": "^8.0.1",
     "cypress": "^10.0.3",
     "eslint-plugin-cypress": "^2.12.1",
     "http-server": "^14.1.1",
